@@ -1,3 +1,54 @@
+---
+title: "Assessing climate-driven compositional shifts in Boreal Forests using iLand"
+author: "Quinn Asena • Winslow Hansen"
+affiliation: "Cary Institute of Ecosystem Studies"
+date: today
+# bibliography: ../refs.bib
+from: markdown+emoji
+format:
+  revealjs:
+    theme: dark
+    css: custom.css
+    slide-number: true
+    incremental: false
+    embed-resources: true
+
+title-slide-attributes:
+  data-background-color: "#054746ff"
+---
+
+
+## People
+
+- Jill Johnstone
+- Xanthe Walker
+- Jazlynn Hall
+- Kate Hayes
+
+## Introduction
+
+
+## What is climate doing?
+
+plot of ssp245 for 3 gcms
+
+warmer wetter?
+warmer drier?
+
+
+## What is fire doing?
+
+Increasing?
+stable? 
+DECREASING?!
+
+
+## What is vegetation doing?
+
+3 landscapes, 3 GCMs, ssp245, fire on/off
+
+
+
 ## Conclusion 1:
 
 - Fire breaks the leagacy lock of existing species composition and allows deciduous vegetation to expand
@@ -20,3 +71,14 @@
 
 
 - Climate is warming and wetting but fire not increasing markedly. Climate is controling fire more than vegetation is controling fire.
+
+
+## Work in progress :construction_worker:
+
+complete set of simulations 3 GCMs * 3 SSPs * 6 landscapes * fire on/off, Possibly * 3 fire return intervals
+
+Extend into Canada. Landscapes setup already, just a matter of core hours
+
+## Future 
+
+microbial community?
