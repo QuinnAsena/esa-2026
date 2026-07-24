@@ -1,0 +1,22 @@
+## Conclusion 1:
+
+- Fire breaks the leagacy lock of existing species composition and allows deciduous vegetation to expand
+
+- In the absence of fire climate alone will not break the legacy lock
+
+
+## Conclusion 2:
+
+- Fire shapes species composition but also the age distubution.
+
+- Steep increase in pima at the beginning of the simulation may be from fire conditions near the end of the spin-up.
+
+
+
+- Legacy locks shape both species composition and stand dynamics
+
+
+- Plot DBH alongside area dominated
+
+
+- Climate is warming and wetting but fire not increasing markedly. Climate is controling fire more than vegetation is controling fire.

@@ -63,3 +63,38 @@ ggsave(
   height = height_cm,
   units = "cm"
 )
+
+
+
+
+# Testing zone
+gcm <- c("TaiESM1")
+ssp <- c("ssp245")
+var <- c("tasmax")
+year <- 1980
+
+clim_in <- file.path("//10.60.2.10/FF_Lab/project_data/downscaling/Landscapes",
+  paste0("Downscaled ", gcm), ssp, var,
+  paste0(gcm, "-", ssp, "-", var, "-", year, ".nc"))
+
+rast <- rast(clim_in, lyr = 1)
+nlyr(rast)
+r <- rast(ext(rast), nlyr = 1, crs = crs(rast))
+values(r) <- 1
+r <- project(r, crs(env_grids[[1]]), method = "near")
+r_df <- as.data.frame(r, xy = TRUE, na.rm = TRUE)
+
+
+ggplot() +
+  geom_sf(data = intak_proj, fill = "#3b8a3b33", color = NA, alpha = 0.5) +
+  geom_raster(data = env_grids_df[[1]], aes(x, y, fill = I("black"))) +
+  geom_raster(data = env_grids_df[[2]], aes(x, y, fill = I("black"))) +
+  geom_raster(data = env_grids_df[[3]], aes(x, y, fill = I("black"))) +
+  geom_raster(data = r_df, aes(x, y, fill = I("black"), alpha = 0.5)) +
+  geom_sf(data = ak_proj, fill = NA, color = "black", linewidth = 0.5) +
+  coord_sf(expand = FALSE)
+
+
+study_domain <- rast("./data/ABoVE_Study_Domain.tif")
+plot(study_domain)
+plot(r, add = TRUE)
