@@ -19,7 +19,14 @@ param_grid <- expand.grid(
 )
 
 
-gcm_summaries <- function(gcm, ssp, var, year, out_dir) {
+gcm_summaries <- function(gcm, ssp, var, year, out_dir, memfrac = 0.03) {
+
+  # multisession workers each independently size their read chunks off total
+  # system RAM with no awareness of the other concurrent workers, so cap each
+  # process's budget explicitly (memfrac ~= 0.8 / n_workers) to keep the sum
+  # of all workers' chunks within actual system RAM
+  terra::terraOptions(memfrac = memfrac)
+  terra::gdalCache(500)
 
   out_file <- file.path(out_dir, paste0(gcm, "-", ssp, "-", var, "-", year, ".parquet"))
 
@@ -55,16 +62,20 @@ gcm_summaries <- function(gcm, ssp, var, year, out_dir) {
   write_parquet(data.frame(gcm = gcm, ssp = ssp, var = var, year = year, value = value), tmp_file)
   file.rename(tmp_file, out_file)
 
+  rm(landscapes_r, daily_means)
+  gc()
+
   invisible(NULL)
 }
 
 out_dir <- "//10.60.2.10/FF_Lab/personal_storage/quinn_storage/gcm_summaries"
 dir.create(out_dir, showWarnings = FALSE, recursive = TRUE)
 
-plan(multisession, workers = 20)
+n_workers <- 20
+plan(multisession, workers = n_workers)
 
 invisible(future_lapply(seq_len(nrow(param_grid)), \(i) {
-  with(param_grid[i, ], gcm_summaries(gcm, ssp, var, year, out_dir = out_dir))
+  with(param_grid[i, ], gcm_summaries(gcm, ssp, var, year, out_dir = out_dir, memfrac = 0.8 / n_workers))
 }))
 
 plan(sequential)
