@@ -206,19 +206,36 @@ fire_df <- arrow::read_parquet("//10.60.2.10/FF_Lab/personal_storage/quinn_stora
     year_actual >= 2015,
     year_actual <= 2100
   ) |>
-  dplyr::mutate(replicate = factor(replicate))
+  dplyr::mutate(
+    replicate = factor(replicate),
+    landscape = factor(landscape,
+      levels = c("landscape_alaska_01", "landscape_alaska_02", "landscape_alaska_03"),
+      labels = c("landscape 1", "landscape 2", "landscape 3")
+    )
+  )
 
 fire_plot <- ggplot(fire_df, aes(x = year_actual, y = area_ha,
                     colour = ssp, fill = ssp, linetype = fri)) +
   geom_smooth(method = "gam", formula = y ~ s(x), alpha = 0.2) +
   facet_grid(landscape ~ model) +
   coord_cartesian(ylim = c(0, NA)) +
-  scale_colour_viridis_d(name = "SSP", end = 0.85) +
-  scale_fill_viridis_d(name = "SSP", end = 0.85) +
+  scale_colour_ssp() +
+  scale_fill_ssp() +
   scale_linetype_discrete(name = "FRI") +
-  labs(x = "Year", y = "Area burned (ha)") +
-  theme_iland()
+  labs(x = "Year", y = "Area burned (ha)", colour = "SSP", fill = "SSP") +
+  theme_iland() +
+  theme(
+    strip.background = element_rect(fill = NA, colour = NA),
+  )
 
+ggsave(
+  filename = "./figures/fire_plot.svg",
+  plot = fire_plot,
+  device = "svg",
+  width = full_slide_width_cm,
+  height = full_slide_height_cm,
+  units = "cm"
+)
 
 
 #---------- Species area dominated ----------#
@@ -230,7 +247,7 @@ species_dom <- arrow::read_parquet("//10.60.2.10/FF_Lab/personal_storage/quinn_s
     treatment %in% c("NorEsm2-MMssp245_dbh2.5_onlysimfalse_yr_1_iLand2.1", "NorEsm2-MMssp245_dbh2.5_onlysimtrue_yr_1_iLand2.1", "TaiESM1ssp245_dbh2.5_onlysimfalse_yr_1_iLand2.1", "TaiESM1ssp245_dbh2.5_onlysimtrue_yr_1_iLand2.1", "UKESM1-0-LLssp245_dbh2.5_onlysimfalse_yr_1_iLand2.1", "UKESM1-0-LLssp245_dbh2.5_onlysimtrue_yr_1_iLand2.1"),
     sp_dom    %in% c("Pima", "Pigl", "Bene", "Potr"),
     year_actual >= 2015,
-    year_actual <= 2101
+    year_actual <= 2100
   ) |>
   dplyr::mutate(
     sp_dom      = factor(sp_dom, levels = c("Pima", "Pigl", "Bene", "Potr")),
@@ -243,7 +260,180 @@ species_dom_plot <- ggplot(species_dom, aes(x = year_actual, y = area_ha, group 
   facet_grid(sp_dom ~ paste(landscape, treat_short, sep = " · "), scales = "free_y") +
   scale_colour_species(guide = "none") +
   labs(x = "Year", y = "Area (ha)") +
-  theme_iland()
-  theme(strip.text.y = element_text(angle = 0))
+  theme_iland() +
+  theme(
+    strip.background = element_rect(fill = NA, colour = NA),
+  )
 
-p
+species_dom_plot
+
+
+#---------- Species area dominated (alt: facet landscape x model, fire = linetype) ----------#
+# Same underlying species_dom data/replicates as above - individual replicate
+# lines kept as-is (per Quinn: the spread/stochasticity contrast between fire
+# on vs off reads better as raw lines than a summarised ribbon). Reduces the
+# facet grid from 4 species x 18 landscape/treatment combos down to a 3x3
+# landscape x model grid, moving species to colour and fire to linetype.
+
+species_dom2 <- species_dom |>
+  dplyr::mutate(
+    model = sub("ssp[0-9].*$", "", treatment),
+    fire  = factor(
+      grepl("onlysimtrue", treatment),
+      levels = c(FALSE, TRUE),
+      labels = c("Fire", "No fire")
+    ),
+    landscape = factor(landscape,
+      levels = c(
+        "landscape_alaska_01_2015-2100scenario",
+        "landscape_alaska_02_2015-2100scenario",
+        "landscape_alaska_03_2015-2100scenario"
+      ),
+      labels = c("landscape 1", "landscape 2", "landscape 3")
+    )
+  )
+
+species_dom_plot2 <- ggplot(species_dom2, aes(
+    x = year_actual, y = area_ha,
+    group = interaction(replicate, sp_dom, fire),
+    colour = sp_dom, linetype = fire
+  )) +
+  geom_line(linewidth = 0.5, alpha = 0.5) +
+  facet_grid(landscape ~ model, scales = "free_y") +
+  scale_colour_species(name = "Species") +
+  scale_linetype_manual(name = "Fire", values = c("Fire" = "solid", "No fire" = "dashed")) +
+  labs(x = "Year", y = "Dominant species area (ha)") +
+  theme_iland() +
+  theme(
+    strip.background = element_rect(fill = NA, colour = NA),
+  )
+
+species_dom_plot2
+
+ggsave(
+  filename = "./figures/species_dom_plot2.svg",
+  plot = species_dom_plot2,
+  device = "svg",
+  width = full_slide_width_cm,
+  height = full_slide_height_cm,
+  units = "cm"
+)
+
+
+#---------- Species area dominated (per-landscape, facet by species) ----------#
+# One figure per landscape (3 separate slides). Facets by species (rows) x
+# model (cols) instead of colouring by species, so a low-abundance species
+# like Potr/aspen gets its own y-scale rather than being flattened next to
+# higher-abundance species sharing a panel.
+
+plot_species_dom_landscape <- function(data, landscape_label) {
+  ggplot(
+    dplyr::filter(data, landscape == landscape_label),
+    aes(
+      x = year_actual, y = area_ha,
+      group = interaction(replicate, fire),
+      colour = sp_dom, linetype = fire
+    )
+  ) +
+    geom_line(linewidth = 0.5, alpha = 0.5) +
+    facet_grid(sp_dom ~ model, scales = "free_y") +
+    scale_colour_species(guide = "none") +
+    scale_linetype_manual(name = "Fire", values = c("Fire" = "solid", "No fire" = "dashed")) +
+    labs(x = "Year", y = "Dominant species area (ha)", title = landscape_label) +
+    theme_iland() +
+    theme(
+      strip.background = element_rect(fill = NA, colour = NA),
+    )
+}
+
+species_dom_plot_landscape1 <- plot_species_dom_landscape(species_dom2, "landscape 1")
+species_dom_plot_landscape2 <- plot_species_dom_landscape(species_dom2, "landscape 2")
+species_dom_plot_landscape3 <- plot_species_dom_landscape(species_dom2, "landscape 3")
+
+species_dom_plot_landscape1
+species_dom_plot_landscape2
+species_dom_plot_landscape3
+
+ggsave(
+  filename = "./figures/species_dom_landscape1.svg",
+  plot = species_dom_plot_landscape1,
+  device = "svg",
+  width = full_slide_width_cm,
+  height = full_slide_height_cm,
+  units = "cm"
+)
+
+ggsave(
+  filename = "./figures/species_dom_landscape2.svg",
+  plot = species_dom_plot_landscape2,
+  device = "svg",
+  width = full_slide_width_cm,
+  height = full_slide_height_cm,
+  units = "cm"
+)
+
+ggsave(
+  filename = "./figures/species_dom_landscape3.svg",
+  plot = species_dom_plot_landscape3,
+  device = "svg",
+  width = full_slide_width_cm,
+  height = full_slide_height_cm,
+  units = "cm"
+)
+
+
+#---------- Species area dominated (per-landscape x fire, facet by species) ----------#
+# Split fire condition out into its own figure too, instead of linetype - each
+# plot now shows exactly one landscape x one fire condition, so there is no
+# solid/dashed distinction to squint at, just species (rows) x model (cols),
+# with replicate spread still visible. 6 figures total (3 landscapes x 2 fire).
+
+plot_species_dom_landscape_fire <- function(data, landscape_label, fire_label) {
+  ggplot(
+    dplyr::filter(data, landscape == landscape_label, fire == fire_label),
+    aes(x = year_actual, y = area_ha, group = replicate, colour = sp_dom)
+  ) +
+    geom_line(linewidth = 0.5, alpha = 0.5) +
+    facet_grid(sp_dom ~ model, scales = "free_y") +
+    scale_colour_species(guide = "none") +
+    labs(
+      x = "Year", y = "Dominant species area (ha)",
+      title = paste(landscape_label, fire_label, sep = " · ")
+    ) +
+    theme_iland() +
+    theme(
+      strip.background = element_rect(fill = NA, colour = NA),
+    )
+}
+
+landscape_fire_combos <- expand.grid(
+  landscape_label = c("landscape 1", "landscape 2", "landscape 3"),
+  fire_label      = c("Fire", "No fire"),
+  stringsAsFactors = FALSE
+)
+
+species_dom_plots_landscape_fire <- Map(
+  \(landscape_label, fire_label) {
+    plot_species_dom_landscape_fire(species_dom2, landscape_label, fire_label)
+  },
+  landscape_fire_combos$landscape_label,
+  landscape_fire_combos$fire_label
+)
+names(species_dom_plots_landscape_fire) <- paste(
+  gsub(" ", "", landscape_fire_combos$landscape_label),
+  gsub(" ", "", landscape_fire_combos$fire_label),
+  sep = "_"
+)
+
+species_dom_plots_landscape_fire[["landscape1_Fire"]]
+
+for (nm in names(species_dom_plots_landscape_fire)) {
+  ggsave(
+    filename = paste0("./figures/species_dom_", nm, ".svg"),
+    plot = species_dom_plots_landscape_fire[[nm]],
+    device = "svg",
+    width = full_slide_width_cm,
+    height = full_slide_height_cm,
+    units = "cm"
+  )
+}

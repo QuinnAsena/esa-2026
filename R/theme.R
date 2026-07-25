@@ -35,6 +35,17 @@ SPECIES_LABELS <- c(
 SPECIES_ORDER <- c("Pima", "Pigl", "Potr", "Bene", "Mixed.spruce",   "Mixed.deciduous", "Not forested")
 
 
+# ── SSP identity ───────────────────────────────────────────────────────────────
+# Colourblind-safe categorical palette, fixed per scenario so the same SSP is
+# always the same colour across every chart in the deck.
+
+SSP_COLOURS <- c(
+  ssp126 = "#1baf7a", # aqua
+  ssp245 = "#2a78d6", # blue
+  ssp370 = "#eb6834"  # orange
+)
+
+
 # ── ggplot2 theme ─────────────────────────────────────────────────────────────
 # Built on theme_classic() (clean white background, no default gridlines)
 # then adds a subtle major grid. Matches the Plotly "iland" template visually.
@@ -86,6 +97,14 @@ scale_colour_species <- function(na.value = "#bdbdbd", ...) {
     na.value = na.value,
     ...
   )
+}
+
+scale_fill_ssp <- function(...) {
+  scale_fill_manual(values = SSP_COLOURS, ...)
+}
+
+scale_colour_ssp <- function(...) {
+  scale_colour_manual(values = SSP_COLOURS, ...)
 }
 
 
