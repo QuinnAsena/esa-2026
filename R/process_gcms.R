@@ -105,7 +105,14 @@ invisible(future_lapply(
     with(param_grid[i, ], gcm_summaries(gcm, ssp, var, year, out_dir = out_dir, log_dir = log_dir, memfrac = 0.8 / n_workers))
   },
   future.globals = c("gcm_summaries", "log_failure", "param_grid", "out_dir", "log_dir", "n_workers"),
-  future.packages = c("terra", "arrow")
+  future.packages = c("terra", "arrow"),
+  # something inside a worker (most likely terra/GDAL generating a random
+  # temp filename internally) consumes RNG state without us declaring it -
+  # future's own unreliable-RNG check then crashes on a real bug in its
+  # label-handling code. future.seed = TRUE is future's own suggested fix:
+  # gives every future a proper parallel-safe RNG stream up front instead
+  # of trying to detect misuse after the fact
+  future.seed = TRUE
 ))
 
 plan(sequential)

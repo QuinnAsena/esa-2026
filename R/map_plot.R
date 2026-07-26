@@ -374,6 +374,10 @@ species_dom_plot_landscape1
 species_dom_plot_landscape2
 species_dom_plot_landscape3
 
+
+species_dom_plot_landscape1 / gcm_climate_smooth_plot + plot_layout(nrow = 2, heights = c(0.8, 0.2))
+
+
 ggsave(
   filename = "./figures/species_dom_landscape1.svg",
   plot = species_dom_plot_landscape1,
