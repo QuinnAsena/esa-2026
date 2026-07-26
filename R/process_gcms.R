@@ -19,7 +19,22 @@ param_grid <- expand.grid(
 )
 
 
-gcm_summaries <- function(gcm, ssp, var, year, out_dir, memfrac = 0.03) {
+# Every warning() raised inside a multisession worker gets buffered and
+# replayed in the main session once all futures resolve - with dozens of
+# workers each raising several, that replay step can itself crash (the
+# `if (is.na(label))` error seen in practice). Logging to a file instead
+# sidesteps R's warning-relay machinery entirely. Parallel-safe by
+# construction, not by locking: every failure gets its own uniquely-named
+# log file (one per gcm/ssp/var/year, same convention as the parquet
+# outputs), so no two workers ever write the same path and no mutex/append
+# coordination is needed.
+log_failure <- function(log_dir, gcm, ssp, var, year, message) {
+  dir.create(log_dir, showWarnings = FALSE, recursive = TRUE)
+  log_file <- file.path(log_dir, paste0(gcm, "-", ssp, "-", var, "-", year, ".log"))
+  writeLines(paste0(format(Sys.time()), "\t", message), log_file)
+}
+
+gcm_summaries <- function(gcm, ssp, var, year, out_dir, log_dir, memfrac = 0.03) {
 
   # multisession workers each independently size their read chunks off total
   # system RAM with no awareness of the other concurrent workers, so cap each
@@ -39,7 +54,7 @@ gcm_summaries <- function(gcm, ssp, var, year, out_dir, memfrac = 0.03) {
     paste0(gcm, "-", ssp, "-", var, "-", year, ".nc"))
 
   if (!file.exists(clim_in)) {
-    warning("Missing file, skipping: ", gcm, " ", ssp, " ", var, " ", year)
+    log_failure(log_dir, gcm, ssp, var, year, "Missing source file")
     return(invisible(NULL))
   }
 
@@ -68,20 +83,29 @@ gcm_summaries <- function(gcm, ssp, var, year, out_dir, memfrac = 0.03) {
     rm(landscapes_r, daily_means)
     gc()
   }, error = function(e) {
-    warning("Failed, skipping: ", gcm, " ", ssp, " ", var, " ", year, " - ", conditionMessage(e))
+    log_failure(log_dir, gcm, ssp, var, year, paste("Failed:", conditionMessage(e)))
   })
 
   invisible(NULL)
 }
 
 out_dir <- "//10.60.2.10/FF_Lab/personal_storage/quinn_storage/gcm_summaries"
+log_dir <- file.path(out_dir, "failures")
 dir.create(out_dir, showWarnings = FALSE, recursive = TRUE)
 
 n_workers <- 20
 plan(multisession, workers = n_workers)
 
-invisible(future_lapply(seq_len(nrow(param_grid)), \(i) {
-  with(param_grid[i, ], gcm_summaries(gcm, ssp, var, year, out_dir = out_dir, memfrac = 0.8 / n_workers))
-}))
+# explicit globals/packages instead of future's automatic scan - keeps any
+# stray terra object left over in this session (e.g. from also having run
+# map_plot.R interactively) from being swept up and serialized to workers
+invisible(future_lapply(
+  seq_len(nrow(param_grid)),
+  \(i) {
+    with(param_grid[i, ], gcm_summaries(gcm, ssp, var, year, out_dir = out_dir, log_dir = log_dir, memfrac = 0.8 / n_workers))
+  },
+  future.globals = c("gcm_summaries", "log_failure", "param_grid", "out_dir", "log_dir", "n_workers"),
+  future.packages = c("terra", "arrow")
+))
 
 plan(sequential)
