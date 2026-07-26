@@ -192,6 +192,26 @@ ggsave(
   units = "cm"
 )
 
+#---------- plot GCM with GAM over time ----------#
+
+gcm_climate_smooth_plot <- ggplot(gcm_climate_facets, aes(x = year, y = value, color = gcm, fill = gcm)) +
+  geom_smooth(linewidth = 0.8) +
+  facet_wrap(~facet, scales = "free_y", ncol = 1) +
+  scale_color_manual(values = gcm_colors) +
+  scale_fill_manual(values = gcm_colors) +
+  labs(x = NULL, y = NULL, color = "GCM", fill = "GCM") +
+  theme_minimal() +
+  theme(
+    legend.position = "bottom",
+    panel.grid.minor = element_blank(),
+    panel.grid.major = element_line(color = "#e1e0d9", linewidth = 0.3),
+    axis.title = element_text(size = 16, colour = "#0b0b0b"),
+    axis.text = element_text(size = 14, colour = "#52514e"),
+    strip.text = element_text(size = 16, colour = "#0b0b0b", face = "bold"),
+    legend.title = element_text(size = 13, colour = "#0b0b0b"),
+    legend.text = element_text(size = 13, colour = "#52514e"),
+  )
+
 
 #---------- Fire over time ----------#
 

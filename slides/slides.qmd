@@ -30,10 +30,18 @@ title-slide-attributes:
 
 ## What is climate doing?
 
-plot of ssp245 for 3 gcms
+:::: {.columns}
+::: {.column}
 
-warmer wetter?
-warmer drier?
+Showing 3 GCMs from CMIP6 for ssp245
+
+NorESM, TaiESM, and UKESM chosen for spread in temperature and precipitation
+:::
+::: {.column}
+:::
+::::
+
+
 
 
 ## What is fire doing?

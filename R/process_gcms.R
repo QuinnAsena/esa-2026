@@ -43,27 +43,33 @@ gcm_summaries <- function(gcm, ssp, var, year, out_dir, memfrac = 0.03) {
     return(invisible(NULL))
   }
 
-  landscapes_r <- rast(clim_in)
+  # a single malformed/unreadable source file must not take the whole
+  # future_lapply batch down with it - catch and log, skip, keep going
+  tryCatch({
+    landscapes_r <- rast(clim_in)
 
-  # spatial mean per day (fast: avoids loading the full daily x cell array)
-  daily_means <- global(landscapes_r, fun = "mean", na.rm = TRUE)$mean
+    # spatial mean per day (fast: avoids loading the full daily x cell array)
+    daily_means <- global(landscapes_r, fun = "mean", na.rm = TRUE)$mean
 
-  value <- if (var == "pr") {
-    # mm/day -> annual total precip (mm/yr)
-    sum(daily_means)
-  } else if (var %in% c("tasmax", "tasmin")) {
-    # Kelvin -> annual mean temp (deg C)
-    mean(daily_means) - 273.15
-  } else {
-    mean(daily_means)
-  }
+    value <- if (var == "pr") {
+      # mm/day -> annual total precip (mm/yr)
+      sum(daily_means)
+    } else if (var %in% c("tasmax", "tasmin")) {
+      # Kelvin -> annual mean temp (deg C)
+      mean(daily_means) - 273.15
+    } else {
+      mean(daily_means)
+    }
 
-  tmp_file <- paste0(out_file, ".tmp")
-  write_parquet(data.frame(gcm = gcm, ssp = ssp, var = var, year = year, value = value), tmp_file)
-  file.rename(tmp_file, out_file)
+    tmp_file <- paste0(out_file, ".tmp")
+    write_parquet(data.frame(gcm = gcm, ssp = ssp, var = var, year = year, value = value), tmp_file)
+    file.rename(tmp_file, out_file)
 
-  rm(landscapes_r, daily_means)
-  gc()
+    rm(landscapes_r, daily_means)
+    gc()
+  }, error = function(e) {
+    warning("Failed, skipping: ", gcm, " ", ssp, " ", var, " ", year, " - ", conditionMessage(e))
+  })
 
   invisible(NULL)
 }
