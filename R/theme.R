@@ -35,14 +35,18 @@ SPECIES_LABELS <- c(
 SPECIES_ORDER <- c("Pima", "Pigl", "Potr", "Bene", "Mixed.spruce",   "Mixed.deciduous", "Not forested")
 
 
-# ── SSP identity ───────────────────────────────────────────────────────────────
-# Colourblind-safe categorical palette, fixed per scenario so the same SSP is
-# always the same colour across every chart in the deck.
+# ── GCM identity ───────────────────────────────────────────────────────────────
+# Colourblind-safe categorical palette, fixed per model so the same GCM is
+# always the same colour across every chart in the deck. Upstream datasets are
+# inconsistent about casing ("NorESM2-MM" in the downscaling pipeline vs
+# "NorEsm2-MM" in fire_annual.parquet) so both spellings are keyed here rather
+# than relying on every dataset being recoded to match.
 
-SSP_COLOURS <- c(
-  ssp126 = "#1baf7a", # aqua
-  ssp245 = "#2a78d6", # blue
-  ssp370 = "#eb6834"  # orange
+GCM_COLOURS <- c(
+  "TaiESM1"     = "#2a78d6", # blue
+  "UKESM1-0-LL" = "#eb6834", # orange
+  "NorESM2-MM"  = "#1baf7a", # aqua
+  "NorEsm2-MM"  = "#1baf7a"  # aqua (alt casing seen in fire_annual.parquet)
 )
 
 
@@ -99,12 +103,12 @@ scale_colour_species <- function(na.value = "#bdbdbd", ...) {
   )
 }
 
-scale_fill_ssp <- function(...) {
-  scale_fill_manual(values = SSP_COLOURS, ...)
+scale_fill_gcm <- function(...) {
+  scale_fill_manual(values = GCM_COLOURS, ...)
 }
 
-scale_colour_ssp <- function(...) {
-  scale_colour_manual(values = SSP_COLOURS, ...)
+scale_colour_gcm <- function(...) {
+  scale_colour_manual(values = GCM_COLOURS, ...)
 }
 
 

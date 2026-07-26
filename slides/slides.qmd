@@ -25,7 +25,12 @@ title-slide-attributes:
 - Jazlynn Hall
 - Kate Hayes
 
-## Introduction
+## Study area
+
+- 3 landscapes in interior Alaska
+- 60 kha
+
+![](../figures/map_ak.svg){fig-align="center"}
 
 
 ## What is climate doing?
@@ -33,15 +38,21 @@ title-slide-attributes:
 :::: {.columns}
 ::: {.column}
 
-Showing 3 GCMs from CMIP6 for ssp245
+- Showing 3 GCMs from CMIP6 for ssp245
 
-NorESM, TaiESM, and UKESM chosen for spread in temperature and precipitation
+- NorESM, TaiESM, and UKESM chosen for spread in temperature and precipitation
+
 :::
 ::: {.column}
+
+- UKESM warmest and wettest
+- NorESM coolest and driest
+- TaiESM in the middle
+
 :::
 ::::
 
-
+![Two-panel climate projection chart comparing three CMIP6 models under ssp245, with smooth trend lines showing temperature and precipitation through time. The UKESM line trends warmest and wettest, the NorESM line coolest and driest, and the TaiESM line remains intermediate.](../figures/gcm_climate_smooth_plot.svg){fig-align="center"}
 
 
 ## What is fire doing?

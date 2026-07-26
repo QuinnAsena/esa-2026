@@ -85,10 +85,3 @@ invisible(future_lapply(seq_len(nrow(param_grid)), \(i) {
 }))
 
 plan(sequential)
-
-gcm_climate <- open_dataset(out_dir, format = "parquet") |>
-  collect() |>
-  pivot_wider(names_from = var, values_from = value) |>
-  mutate(tave = (tasmax + tasmin) / 2) |>
-  select(gcm, ssp, year, pr, tasmax, tasmin, tave)
-
