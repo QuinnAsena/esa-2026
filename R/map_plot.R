@@ -34,11 +34,11 @@ env_grids_df <- lapply(env_grids, \(r) {
 })
 
 map_plt <- ggplot() +
+  geom_sf(data = ak_proj, fill = "grey20", color = "grey80", linewidth = 0.5) +
   geom_sf(data = intak_proj, fill = "#3b8a3b33", color = NA, alpha = 0.5) +
-  geom_raster(data = env_grids_df[[1]], aes(x, y, fill = I("black"))) +
-  geom_raster(data = env_grids_df[[2]], aes(x, y, fill = I("black"))) +
-  geom_raster(data = env_grids_df[[3]], aes(x, y, fill = I("black"))) +
-  geom_sf(data = ak_proj, fill = NA, color = "black", linewidth = 0.5) +
+  geom_raster(data = env_grids_df[[1]], aes(x, y, fill = I("white"))) +
+  geom_raster(data = env_grids_df[[2]], aes(x, y, fill = I("white"))) +
+  geom_raster(data = env_grids_df[[3]], aes(x, y, fill = I("white"))) +
   coord_sf(expand = FALSE) +
   annotation_north_arrow(
     location = "br",
@@ -47,16 +47,16 @@ map_plt <- ggplot() +
     height = unit(3, "cm"),
     width  = unit(3, "cm")
   ) +
-  theme_minimal() +
+  theme_iland_dark() +
   theme(
     legend.position = "none",
     axis.title = element_blank(),
-    axis.text = element_text(size = 16, colour = "black"),
     # panel.grid = element_blank(),
   )
 
 # half of a 16:9 slide (13.333in x 7.5in) - other half is bullet points
 half_slide_width_cm <- (13.333 * 2.54) / 2
+half_slide_height_cm <- (9.333 * 2.54) / 2
 
 ext <- st_bbox(ak_proj)
 map_ratio <- (ext$xmax - ext$xmin) / (ext$ymax - ext$ymin)
@@ -110,13 +110,12 @@ gcm_downscaled_area_plot <- ggplot() +
     height = unit(3, "cm"),
     width  = unit(3, "cm")
   ) +
-  theme_minimal() +
+  theme_iland() +
   theme(
     legend.position = "none",
     axis.title = element_blank(),
-    axis.text = element_text(size = 16, colour = "black"),
     panel.grid = element_blank(),
-  )  
+  )
 
 gcm_ext <- st_bbox(study_domain_poly)
 gcm_map_ratio <- (gcm_ext$xmax - gcm_ext$xmin) / (gcm_ext$ymax - gcm_ext$ymin)
@@ -135,10 +134,13 @@ ggsave(
 
 #---------- plot GCM over time ----------#
 
-gcm_climate <- open_dataset("//10.60.2.10/FF_Lab/personal_storage/quinn_storage/gcm_summaries") |>
-  collect() |>
-  pivot_wider(names_from = var, values_from = value) |>
-  mutate(tave = (tasmax + tasmin) / 2)
+rerun <- FALSE
+if (rerun == TRUE) {
+  gcm_climate <- open_dataset("//10.60.2.10/FF_Lab/personal_storage/quinn_storage/gcm_summaries") |>
+    collect() |>
+    pivot_wider(names_from = var, values_from = value) |>
+    mutate(tave = (tasmax + tasmin) / 2)
+}
 
 # reshape to one row per facet: temperature carries tave as the line and
 # tasmin/tasmax as a ribbon band around it; precipitation has no ribbon
@@ -163,16 +165,9 @@ gcm_climate_plot <- ggplot(gcm_climate_facets, aes(x = year, y = value, color = 
   scale_colour_gcm() +
   scale_fill_gcm() +
   labs(x = NULL, y = NULL, color = "GCM", fill = "GCM") +
-  theme_minimal() +
+  theme_iland_dark() +
   theme(
     legend.position = "bottom",
-    panel.grid.minor = element_blank(),
-    panel.grid.major = element_line(color = "#e1e0d9", linewidth = 0.3),
-    axis.title = element_text(size = 16, colour = "#0b0b0b"),
-    axis.text = element_text(size = 14, colour = "#52514e"),
-    strip.text = element_text(size = 16, colour = "#0b0b0b", face = "bold"),
-    legend.title = element_text(size = 13, colour = "#0b0b0b"),
-    legend.text = element_text(size = 13, colour = "#52514e"),
   )
 
 full_slide_width_cm <- (13.333 * 2.54)
@@ -195,16 +190,9 @@ gcm_climate_smooth_plot <- ggplot(gcm_climate_facets, aes(x = year, y = value, c
   scale_colour_gcm() +
   scale_fill_gcm() +
   labs(x = NULL, y = NULL, color = "GCM", fill = "GCM") +
-  theme_minimal() +
+  theme_iland_dark() +
   theme(
-    legend.position = "bottom",
-    panel.grid.minor = element_blank(),
-    panel.grid.major = element_line(color = "#e1e0d9", linewidth = 0.3),
-    axis.title = element_text(size = 16, colour = "#0b0b0b"),
-    axis.text = element_text(size = 14, colour = "#52514e"),
-    strip.text = element_text(size = 16, colour = "#0b0b0b", face = "bold"),
-    legend.title = element_text(size = 13, colour = "#0b0b0b"),
-    legend.text = element_text(size = 13, colour = "#52514e"),
+    legend.position = "right",
   )
 
 
@@ -212,10 +200,37 @@ ggsave(
   filename = "./figures/gcm_climate_smooth_plot.svg",
   plot = gcm_climate_smooth_plot,
   device = "svg",
-  width = full_slide_width_cm,
-  height = 5,
+  width = half_slide_width_cm,
+  height = half_slide_height_cm,
   units = "cm"
 )
+
+gcm_climate_facets2 <- bind_rows(
+  gcm_climate |>
+    transmute(gcm, ssp, year,
+      facet = "Temp (\u00b0C)",
+      value = tave, ymin = tasmin, ymax = tasmax
+    ),
+  gcm_climate |>
+    transmute(gcm, ssp, year,
+      facet = "Precip (mm/yr)",
+      value = pr, ymin = NA_real_, ymax = NA_real_
+    )
+) |>
+  mutate(facet = factor(facet, levels = c("Temp (\u00b0C)", "Precip (mm/yr)")))
+
+
+gcm_climate_smooth_plot2 <- ggplot(gcm_climate_facets2, aes(x = year, y = value, color = gcm, fill = gcm)) +
+  geom_smooth(linewidth = 0.8) +
+  facet_wrap(~facet, scales = "free_y", ncol = 1, strip.position = "right") +
+  scale_colour_gcm() +
+  scale_fill_gcm() +
+  labs(x = NULL, y = NULL, color = "GCM", fill = "GCM") +
+  theme_iland_dark() +
+  theme(
+    legend.position = "right",
+  )
+
 
 #---------- Fire over time ----------#
 
@@ -244,7 +259,7 @@ fire_plot <- ggplot(fire_df, aes(x = year_actual, y = area_ha,
   scale_colour_gcm() +
   scale_fill_gcm() +
   labs(x = "Year", y = "Area burned (ha)", colour = "GCM", fill = "GCM") +
-  theme_iland() +
+  theme_iland_dark() +
   theme(
     strip.background = element_rect(fill = NA, colour = NA),
   )
@@ -278,7 +293,7 @@ species_dom <- arrow::read_parquet("//10.60.2.10/FF_Lab/personal_storage/quinn_s
 species_dom_plot <- ggplot(species_dom, aes(x = year_actual, y = area_ha, group = interaction(replicate, treatment, landscape), colour = sp_dom)) +
   geom_line(linewidth = 0.5, alpha = 0.7) +
   facet_grid(sp_dom ~ paste(landscape, treat_short, sep = " · "), scales = "free_y") +
-  scale_colour_species(guide = "none") +
+  scale_colour_species_dark(guide = "none") +
   labs(x = "Year", y = "Area (ha)") +
   theme_iland() +
   theme(
@@ -321,7 +336,7 @@ species_dom_plot2 <- ggplot(species_dom2, aes(
   geom_line(linewidth = 0.5, alpha = 0.5) +
   facet_grid(landscape ~ model, scales = "free_y") +
   scale_colour_species(name = "Species") +
-  scale_linetype_manual(name = "Fire", values = c("Fire" = "solid", "No fire" = "dashed")) +
+  scale_linetype_manual(name = "Fire effect", values = c("Fire" = "solid", "No fire" = "dashed")) +
   labs(x = "Year", y = "Dominant species area (ha)") +
   theme_iland() +
   theme(
@@ -357,12 +372,13 @@ plot_species_dom_landscape <- function(data, landscape_label) {
   ) +
     geom_line(linewidth = 0.5, alpha = 0.5) +
     facet_grid(sp_dom ~ model, scales = "free_y") +
-    scale_colour_species(guide = "none") +
-    scale_linetype_manual(name = "Fire", values = c("Fire" = "solid", "No fire" = "dashed")) +
-    labs(x = "Year", y = "Dominant species area (ha)", title = landscape_label) +
-    theme_iland() +
+    scale_colour_species_dark(guide = "none") +
+    scale_linetype_manual(name = "Fire effect", values = c("Fire" = "solid", "No fire" = "dashed")) +
+    labs(x = "Year", y = "Dominant species area (ha)") +
+    theme_iland_dark() +
     theme(
-      strip.background = element_rect(fill = NA, colour = NA),
+    # strip.background = element_rect(fill = NA, colour = NA),
+      legend.position = "right"
     )
 }
 
@@ -374,35 +390,53 @@ species_dom_plot_landscape1
 species_dom_plot_landscape2
 species_dom_plot_landscape3
 
+species_dom_landscape1_gcm <-
+  species_dom_plot_landscape1 /
+  (gcm_climate_smooth_plot2 + plot_spacer() + plot_layout(widths = c(0.7, 0.3))) +
+  plot_annotation(theme = theme(plot.background = element_rect(fill = "transparent", colour = NA))) +
+  plot_layout(nrow = 2, heights = c(0.6, 0.4))
 
-species_dom_plot_landscape1 / gcm_climate_smooth_plot + plot_layout(nrow = 2, heights = c(0.8, 0.2))
+species_dom_landscape2_gcm <-
+  species_dom_plot_landscape2 /
+  (gcm_climate_smooth_plot2 + plot_spacer() + plot_layout(widths = c(0.7, 0.3))) +
+  plot_annotation(theme = theme(plot.background = element_rect(fill = "transparent", colour = NA))) +
+  plot_layout(nrow = 2, heights = c(0.6, 0.4))
+
+species_dom_landscape3_gcm <-
+  species_dom_plot_landscape3 /
+  (gcm_climate_smooth_plot2 + plot_spacer() + plot_layout(widths = c(0.7, 0.3))) +
+  plot_annotation(theme = theme(plot.background = element_rect(fill = "transparent", colour = NA))) +
+  plot_layout(nrow = 2, heights = c(0.6, 0.4))
 
 
 ggsave(
-  filename = "./figures/species_dom_landscape1.svg",
-  plot = species_dom_plot_landscape1,
+  filename = "./figures/species_dom_landscape1_gcm.svg",
+  plot = species_dom_landscape1_gcm,
   device = "svg",
   width = full_slide_width_cm,
   height = full_slide_height_cm,
-  units = "cm"
+  units = "cm",
+  bg = "transparent"
 )
 
 ggsave(
-  filename = "./figures/species_dom_landscape2.svg",
-  plot = species_dom_plot_landscape2,
+  filename = "./figures/species_dom_landscape2_gcm.svg",
+  plot = species_dom_landscape2_gcm,
   device = "svg",
   width = full_slide_width_cm,
   height = full_slide_height_cm,
-  units = "cm"
+  units = "cm",
+  bg = "transparent"
 )
 
 ggsave(
-  filename = "./figures/species_dom_landscape3.svg",
-  plot = species_dom_plot_landscape3,
+  filename = "./figures/species_dom_landscape3_gcm.svg",
+  plot = species_dom_landscape3_gcm,
   device = "svg",
   width = full_slide_width_cm,
   height = full_slide_height_cm,
-  units = "cm"
+  units = "cm",
+  bg = "transparent"
 )
 
 
@@ -450,14 +484,15 @@ names(species_dom_plots_landscape_fire) <- paste(
 )
 
 species_dom_plots_landscape_fire[["landscape1_Fire"]]
+species_dom_plots_landscape_fire[["landscape1_Nofire"]]
 
-for (nm in names(species_dom_plots_landscape_fire)) {
-  ggsave(
-    filename = paste0("./figures/species_dom_", nm, ".svg"),
-    plot = species_dom_plots_landscape_fire[[nm]],
-    device = "svg",
-    width = full_slide_width_cm,
-    height = full_slide_height_cm,
-    units = "cm"
-  )
-}
+# for (nm in names(species_dom_plots_landscape_fire)) {
+#   ggsave(
+#     filename = paste0("./figures/species_dom_", nm, ".svg"),
+#     plot = species_dom_plots_landscape_fire[[nm]],
+#     device = "svg",
+#     width = full_slide_width_cm,
+#     height = full_slide_height_cm,
+#     units = "cm"
+#   )
+# }

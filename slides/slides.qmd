@@ -1,6 +1,6 @@
 ---
 title: "Assessing climate-driven compositional shifts in Boreal Forests using iLand"
-author: "Quinn Asena • Winslow Hansen"
+author: "Quinn Asena • Winslow Hansen • title slide ettiquette?"
 affiliation: "Cary Institute of Ecosystem Studies"
 date: today
 # bibliography: ../refs.bib
@@ -18,64 +18,105 @@ title-slide-attributes:
 ---
 
 
-## People
+## People {.smaller}
 
 - Jill Johnstone
 - Xanthe Walker
 - Jazlynn Hall
 - Kate Hayes
+- ...
 
-## Study area
-
-- 3 landscapes in interior Alaska
-- 60 kha
-
-![](../figures/map_ak.svg){fig-align="center"}
-
-
-## What is climate doing?
+## iLand model - individual-based forest landscape and disturbance model {.smaller}
 
 :::: {.columns}
 ::: {.column}
+
+-  Developed by Rupert Seidl and Werner Rammer
+- Simulates:
+  - individual trees at the species-level
+  - fire on the landscape
+  - permafrost
+  - many other processes
+
+:::
+::: {.column}
+
+![](../figures/iLand-model-components.png){fig-align="center"}
+
+:::
+::::
+
+
+## Study area {.smaller}
+
+:::: {.columns}
+::: {.column}
+
+
+- Using iLand 
+- 3 landscapes in interior Alaska
+- 60 kha
+
+:::
+::: {.column}
+
+![](../figures/map_ak.svg){fig-align="center"}
+
+:::
+::::
+
+## What is climate doing? {.smaller}
+
+:::: {.columns}
+::: {.column width="40"}
 
 - Showing 3 GCMs from CMIP6 for ssp245
 
 - NorESM, TaiESM, and UKESM chosen for spread in temperature and precipitation
 
-:::
-::: {.column}
-
 - UKESM warmest and wettest
 - NorESM coolest and driest
 - TaiESM in the middle
 
+
+:::
+::: {.column width="60"}
+
+![](../figures/gcm_climate_smooth_plot.svg){fig-align="center" alt="Climate projections for 3 GCMs under ssp245 for the study area in interior Alaska. The top panel shows temperature and the bottom panel shows precipitation."}
+
 :::
 ::::
 
-![Two-panel climate projection chart comparing three CMIP6 models under ssp245, with smooth trend lines showing temperature and precipitation through time. The UKESM line trends warmest and wettest, the NorESM line coolest and driest, and the TaiESM line remains intermediate.](../figures/gcm_climate_smooth_plot.svg){fig-align="center"}
 
 
-## What is fire doing?
+## What is fire doing? {.smaller}
 
 Increasing?
 stable? 
 DECREASING?!
 
+![](../figures/fire_plot.svg){fig-align="center"}
 
-## What is vegetation doing?
+## What is vegetation doing? {.smaller}
 
-3 landscapes, 3 GCMs, ssp245, fire on/off
+- 3 landscapes, 3 GCMs, ssp245, fire on/off
+
+
+## Landscape 1 {.smaller}
+
+![](../figures/species_dom_landscape1_gcm.svg){fig-align="center"}
 
 
 
-## Conclusion 1:
+
+## Conclusion 1: {.smaller}
 
 - Fire breaks the leagacy lock of existing species composition and allows deciduous vegetation to expand
 
 - In the absence of fire climate alone will not break the legacy lock
 
 
-## Conclusion 2:
+## Conclusion 2: {.smaller}
 
 - Fire shapes species composition but also the age distubution.
 
@@ -92,12 +133,13 @@ DECREASING?!
 - Climate is warming and wetting but fire not increasing markedly. Climate is controling fire more than vegetation is controling fire.
 
 
-## Work in progress :construction_worker:
+## Work in progress :construction_worker: {.smaller}
 
 complete set of simulations 3 GCMs * 3 SSPs * 6 landscapes * fire on/off, Possibly * 3 fire return intervals
 
 Extend into Canada. Landscapes setup already, just a matter of core hours
 
-## Future 
+## Future {.smaller}
 
-microbial community?
+- Carbon dynamics in permafrosts
+- microbial community
