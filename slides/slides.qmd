@@ -1,6 +1,6 @@
 ---
 title: "Assessing climate-driven compositional shifts in Boreal Forests using iLand"
-author: "Quinn Asena • Winslow Hansen • title slide ettiquette?"
+author: "Quinn Asena • Winslow Hansen • title slide authors?"
 affiliation: "Cary Institute of Ecosystem Studies"
 date: today
 # bibliography: ../refs.bib
@@ -8,7 +8,7 @@ from: markdown+emoji
 format:
   revealjs:
     theme: dark
-    css: custom.css
+    # css: custom.css
     slide-number: true
     incremental: false
     embed-resources: true
@@ -26,7 +26,10 @@ title-slide-attributes:
 - Kate Hayes
 - ...
 
-## iLand model - individual-based forest landscape and disturbance model {.smaller}
+- Plot DBH alongside area dominated. Written code to pull data from derecho, but already have a decent number of slides.
+
+
+## iLand model: individual-based forest landscape and disturbance model {.smaller}
 
 :::: {.columns}
 ::: {.column}
@@ -50,96 +53,159 @@ title-slide-attributes:
 ## Study area {.smaller}
 
 :::: {.columns}
-::: {.column}
+::: {.column width="40%"}
 
 
-- Using iLand 
-- 3 landscapes in interior Alaska
-- 60 kha
+- Using iLand we simulated 4 species across 3 landscapes in interior Alaska:
+  - Conifers: Black and white spruce
+  - Deciduous: Aspen and Birch
+- Each landscape is 60 kha
+
 
 :::
-::: {.column}
+::: {.column width="60%"}
 
 ![](../figures/map_ak.svg){fig-align="center"}
 
 :::
 ::::
 
-## What is climate doing? {.smaller}
+## Study design {.smaller}
 
 :::: {.columns}
-::: {.column width="40"}
+::: {.column width="50%"}
 
-- Showing 3 GCMs from CMIP6 for ssp245
+**Scenario conditions:**
 
-- NorESM, TaiESM, and UKESM chosen for spread in temperature and precipitation
-
-- UKESM warmest and wettest
-- NorESM coolest and driest
-- TaiESM in the middle
-
+- Climate data from 3 CMIP6 Global Circulation Models (GCMs)
+- 1 Shared Socioeconomic Pathway (SSP) - 245 
+  - intermediate scenario - middle of the road
+- Simulated landscapes covering 2015-2100
+  -  two fire feedback conditions - on/off
 
 :::
-::: {.column width="60"}
+::: {.column width="50%"}
+
+**Questions:**
+
+- What is climate doing?
+- what is fire doing?
+- what is vegetation doing?
+- how does everything interact?
+
+:::
+::::
+
+
+## What is climate doing? {.smaller}
+
+::: {style="text-align: center;"}
+*Showing 3 GCMs from CMIP6 for ssp245*
+:::
+
+:::: {.columns}
+::: {.column width="50%"}
+
+- NorESM, TaiESM, and UKESM chosen for spread in temperature and precipitation
+  - UKESM warmest and wettest
+  - NorESM coolest and driest
+  - TaiESM in the middle
+
+:::
+::: {.column width="50%"}
 
 ![](../figures/gcm_climate_smooth_plot.svg){fig-align="center" alt="Climate projections for 3 GCMs under ssp245 for the study area in interior Alaska. The top panel shows temperature and the bottom panel shows precipitation."}
 
 :::
 ::::
 
+## What is fire doing? {.smaller}
+
+![](../figures/fire_plot.svg){fig-align="center"}
 
 
 ## What is fire doing? {.smaller}
 
-Increasing?
-stable? 
-DECREASING?!
+:::: {.columns}
+::: {.column width="50%"}
+
+- Initial expectation was:
+  - *warmer conditions → more fire → shift towards a deciduous composition*
+- Under these GCM-SSPs boreal region also getting wetter
+
+::: {.incremental}
+- Fire maybe not increasing as much as expected... :confused:
+:::
+
+:::
+::: {.column width="50%"}
 
 ![](../figures/fire_plot.svg){fig-align="center"}
 
+:::
+::::
+
+
+
 ## What is vegetation doing? {.smaller}
 
-- 3 landscapes, 3 GCMs, ssp245, fire on/off
 
 
 ## Landscape 1 {.smaller}
 
 ![](../figures/species_dom_landscape1_gcm.svg){fig-align="center"}
 
+## Landscape 2 {.smaller}
 
+![](../figures/species_dom_landscape2_gcm.svg){fig-align="center"}
 
+## Landscape 3 {.smaller}
+
+![](../figures/species_dom_landscape3_gcm.svg){fig-align="center"}
 
 ## Conclusion 1: {.smaller}
 
-- Fire breaks the leagacy lock of existing species composition and allows deciduous vegetation to expand
+1. Fire breaks the legacy lock of existing species composition and allows deciduous vegetation to expand
 
-- In the absence of fire climate alone will not break the legacy lock
+2. In the absence of fire climate alone will not break the legacy lock
+
+3. This result is consistent with fire feedback expectations
 
 
 ## Conclusion 2: {.smaller}
 
-- Fire shapes species composition but also the age distubution.
+1. Fire shapes species composition and also the age distribution.
 
-- Steep increase in pima at the beginning of the simulation may be from fire conditions near the end of the spin-up.
+2. Legacy locks shape both species composition and stand dynamics.
 
+3. Climate is controlling fire more than vegetation.
 
-
-- Legacy locks shape both species composition and stand dynamics
-
-
-- Plot DBH alongside area dominated
+4. Fire is controlling vegetation more than climate.
 
 
-- Climate is warming and wetting but fire not increasing markedly. Climate is controling fire more than vegetation is controling fire.
+## Conclusion 3 {.smaller}
 
+1. Previous work showed that long-term legacies are important.
+  - Transferring from CMIP5 to 6 altered species trajectories due to climate-fire legacies
+2. If fire histories are important then so are fire futures
+3. Which replicate will be the future?
 
 ## Work in progress :construction_worker: {.smaller}
 
-complete set of simulations 3 GCMs * 3 SSPs * 6 landscapes * fire on/off, Possibly * 3 fire return intervals
+Our complete study design includes a complete A complete $3*3*3*2*3$ study design:
 
-Extend into Canada. Landscapes setup already, just a matter of core hours
+- 3 GCMs
+- 3 SSPs
+- 3 landscapes in Alaska plus 3 in Canada
+- Fire feedbacks on/off
+- Possible 3 fire return intervals
 
-## Future {.smaller}
+Just a matter of core hours...
+
+## Future directions {.smaller}
 
 - Carbon dynamics in permafrosts
-- microbial community
+- Species establishment in permafrost
+  - surface organic layer depth is an important factor to establishment.
+  - How will the permafrost active layer respond to climate and future fire?
+- How does the microbial community change with climate and fire?

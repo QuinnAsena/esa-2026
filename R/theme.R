@@ -34,6 +34,35 @@ SPECIES_LABELS <- c(
 # Consistent stack / legend ordering (conifers -> mixed -> deciduous -> non-forest)
 SPECIES_ORDER <- c("Pima", "Pigl", "Potr", "Bene", "Mixed.spruce",   "Mixed.deciduous", "Not forested")
 
+# Short common names for narrow facet strips, where SPECIES_LABELS's full
+# "White spruce (Pigl)" form doesn't fit. Use via:
+#   facet_grid(sp_dom ~ model, labeller = labeller(sp_dom = SPECIES_STRIP_LABELS))
+# Deliberately NOT set via factor(sp_dom, labels = ...) - that renames the
+# factor's actual levels, which would break SPECIES_COLOURS/SPECIES_LABELS
+# lookups elsewhere (they're keyed on "Pima", "Pigl", etc). labeller() only
+# changes the displayed strip text, leaving the underlying codes untouched.
+SPECIES_STRIP_LABELS <- c(
+  Pima = "B. spruce",
+  Pigl = "W. spruce",
+  Bene = "Birch",
+  Potr = "Aspen"
+)
+
+
+# ── Shared x-axis breaks (year) ─────────────────────────────────────────────────
+# ggplot's default expansion pads both sides of a continuous axis, and its
+# automatic pretty() breaks often skip the data's actual start (e.g. showing
+# 2020 as the first tick when the data starts at 2015). Use via:
+#   scale_x_continuous(breaks = YEAR_BREAKS_ECO, expand = expansion(mult = c(0, 0.05)))
+YEAR_BREAKS_CLIMATE <- seq(1980, 2100, by = 20) # gcm_climate: 1980-2100
+# fire/species: 2015-2100, but faceted with several panels side by side, so
+# leave the breaks stopping at 2075 rather than reaching 2100 - a tick right
+# at the data's end collides with the next facet panel's "2015" start label,
+# and an irregular first gap (2015 then 2020) put two labels too close
+# together. Uniform 20-year spacing starting at 2015 solves both; the data
+# still plots out to 2100, only the labelled ticks stop short.
+YEAR_BREAKS_ECO <- seq(2015, 2075, by = 20)
+
 
 # ── GCM identity ───────────────────────────────────────────────────────────────
 # Colourblind-safe categorical palette, fixed per model so the same GCM is
@@ -48,6 +77,25 @@ GCM_COLOURS <- c(
   "NorESM2-MM"  = "#1baf7a", # aqua
   "NorEsm2-MM"  = "#1baf7a"  # aqua (alt casing seen in fire_annual.parquet)
 )
+
+# Recolours the top (column) facet strips of a facet_grid plot to arbitrary
+# per-facet fill colours - e.g. colour_gcm_strips(p, GCM_COLOURS[levels(df$model)])
+# to coordinate each GCM's column strip with its line colour. ggplot2 has no
+# theme-level way to fill individual facet strips differently, so this walks
+# the built gtable and recolours each strip's background rect directly.
+# `colours` must be ordered left-to-right matching the facet column order.
+colour_gcm_strips <- function(plot, colours) {
+  g <- ggplotGrob(plot)
+  strip_idx <- which(grepl("^strip-t", g$layout$name))
+  strip_idx <- strip_idx[order(g$layout$l[strip_idx])]
+  for (i in seq_along(strip_idx)) {
+    strip_grob <- g$grobs[[strip_idx[i]]]$grobs[[1]]
+    rect_name <- grep("^strip[.]background", names(strip_grob$children), value = TRUE)
+    strip_grob$children[[rect_name]]$gp$fill <- colours[i]
+    g$grobs[[strip_idx[i]]]$grobs[[1]] <- strip_grob
+  }
+  g
+}
 
 
 # ── ggplot2 theme ─────────────────────────────────────────────────────────────
