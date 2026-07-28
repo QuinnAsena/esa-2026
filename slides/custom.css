@@ -1,0 +1,56 @@
+/* revealjs's own core stylesheet sets .reveal .footer { text-align: center }
+   with the same selector specificity and loads after this file, so it wins
+   on cascade order alone unless overridden with !important here. */
+/* .reveal .footer { */
+  /* text-align: right !important; */
+  /* the core rule sets width:100% with default content-box sizing, so
+     padding-right just extends the box further off-screen instead of
+     shrinking the usable area - shrink the box itself instead, far enough
+     to clear the bottom-right slide-number counter */
+  /* width: calc(100% - 80px) !important; */
+/* } */
+
+/* Title slide overflowed the fixed slide height once the affiliation
+   subtitle line + 4 wrapped author names were both present - shrink and
+   tighten spacing so everything fits. .reveal h1 is forced to 28pt
+   !important by the theme, so this needs !important too to win. */
+#title-slide .title {
+  font-size: 26pt !important;
+  margin-bottom: 0.3em;
+}
+#title-slide .subtitle {
+  font-size: 15pt !important;
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
+  opacity: 0.85;
+}
+#title-slide .quarto-title-authors {
+  font-size: 15pt !important;
+  margin-top: 0.2em;
+}
+#title-slide .date {
+  font-size: 13pt !important;
+}
+
+/* DOM order is title -> subtitle -> authors -> date (fixed by the Quarto
+   template), but authors should read before the affiliation key. The base
+   reveal.js rule forces `display: block !important` on every slide
+   <section>, so this needs a higher-specificity selector + !important to
+   switch to flex and use `order` to reorder visually without touching the
+   underlying template. */
+.reveal .slides section#title-slide {
+  display: flex !important;
+  flex-direction: column;
+}
+#title-slide .title {
+  order: 1;
+}
+#title-slide .quarto-title-authors {
+  order: 2;
+}
+#title-slide .subtitle {
+  order: 3;
+}
+#title-slide .date {
+  order: 4;
+}

@@ -1,14 +1,15 @@
 ---
 title: "Assessing climate-driven compositional shifts in Boreal Forests using iLand"
-author: "Quinn Asena • Winslow Hansen • title slide authors?"
-affiliation: "Cary Institute of Ecosystem Studies"
+subtitle: "^1^Cary Institute of Ecosystem Studies &nbsp;&nbsp; ^2^University of Alaska Fairbanks"
+author: "Quinn Asena^1^ • Manette Sandor^1^ • Kate Hayes^2^ • Winslow Hansen^1^"
 date: today
-# bibliography: ../refs.bib
+bibliography: ./refs.bib
 from: markdown+emoji
 format:
   revealjs:
     theme: dark
-    # css: custom.css
+    css: custom.css
+    logo: ../figures/CI_logo_transparent.png
     slide-number: true
     incremental: false
     embed-resources: true
@@ -17,29 +18,40 @@ title-slide-attributes:
   data-background-color: "#054746ff"
 ---
 
+## Acknowledgements {.smaller}
 
-## People {.smaller}
+:::: {.columns}
+::: {.column width="60%"}
+
+Many people contributed time and data:
 
 - Jill Johnstone
 - Xanthe Walker
 - Jazlynn Hall
-- Kate Hayes
-- ...
+- Brendan Rogers
+- Michelle Mack
 
-- Plot DBH alongside area dominated. Written code to pull data from derecho, but already have a decent number of slides.
+:::
+::: {.column width="40%"}
 
+Thanks to funders:
+
+- National Science Foundation
+
+![](../figures/NSF_Official_logo_High_Res_1200ppi.png){fig-align="center" width="25%" .nostretch}
+
+:::
+::::
 
 ## iLand model: individual-based forest landscape and disturbance model {.smaller}
 
 :::: {.columns}
 ::: {.column}
 
--  Developed by Rupert Seidl and Werner Rammer
 - Simulates:
   - individual trees at the species-level
   - fire on the landscape
   - permafrost
-  - many other processes
 
 :::
 ::: {.column}
@@ -49,17 +61,32 @@ title-slide-attributes:
 :::
 ::::
 
+::: {.footer}
+@seidl2012
+:::
+
+## Question {.smaller}
+
+*What are the relative impacts of fire on vegetation vs vegetation on fire under future climates?*
+
+<br>
+
+**Expectations:**
+
+- Fire affects forests by breaking legacy locks and allowing for reorganization
+- Forests affect fire through fuel loads and connectivity
+- The relative strength of each is important for understanding the nature of ecosystem change in the future with warming
+
 
 ## Study area {.smaller}
 
 :::: {.columns}
 ::: {.column width="40%"}
 
-
 - Using iLand we simulated 4 species across 3 landscapes in interior Alaska:
-  - Conifers: Black and white spruce
-  - Deciduous: Aspen and Birch
-- Each landscape is 60 kha
+  - Conifers: black and white spruce
+  - Deciduous: aspen and birch
+- Each landscape is 60 kha in size
 
 
 :::
@@ -78,20 +105,20 @@ title-slide-attributes:
 **Scenario conditions:**
 
 - Climate data from 3 CMIP6 Global Circulation Models (GCMs)
-- 1 Shared Socioeconomic Pathway (SSP) - 245 
-  - intermediate scenario - middle of the road
+- 1 Shared Socioeconomic Pathway (SSP) - 2-4.5
+  - intermediate / middle of the road scenario
 - Simulated landscapes covering 2015-2100
-  -  two fire feedback conditions - on/off
+  - two fire feedback conditions - on/off
 
 :::
 ::: {.column width="50%"}
 
-**Questions:**
+**We'll look at:**
 
-- What is climate doing?
-- what is fire doing?
-- what is vegetation doing?
-- how does everything interact?
+- What climate doing
+- What fire doing
+- What vegetation doing
+- How does everything interact
 
 :::
 ::::
@@ -100,7 +127,7 @@ title-slide-attributes:
 ## What is climate doing? {.smaller}
 
 ::: {style="text-align: center;"}
-*Showing 3 GCMs from CMIP6 for ssp245*
+*Showing 3 GCMs from CMIP6 for ssp2-4.5*
 :::
 
 :::: {.columns}
@@ -114,7 +141,7 @@ title-slide-attributes:
 :::
 ::: {.column width="50%"}
 
-![](../figures/gcm_climate_smooth_plot.svg){fig-align="center" alt="Climate projections for 3 GCMs under ssp245 for the study area in interior Alaska. The top panel shows temperature and the bottom panel shows precipitation."}
+![](../figures/gcm_climate_smooth_plot.svg){fig-align="center" alt="Climate projections for 3 GCMs under ssp2-4.5 for the study area in interior Alaska. The top panel shows temperature and the bottom panel shows precipitation."}
 
 :::
 ::::
@@ -145,25 +172,29 @@ title-slide-attributes:
 :::
 ::::
 
-
+::: {.incremental}
+- Caveat: we are examining model parameters of drought index, which might affect fire response to climate
+:::
 
 ## What is vegetation doing? {.smaller}
 
+- Initial expectation was an expansion of deciduous species with increased fire
+-
+- 
 
-
-## Landscape 1 {.smaller}
+## Fire feedbacks on vegetation 1 {.smaller}
 
 ![](../figures/species_dom_landscape1_gcm.svg){fig-align="center"}
 
-## Landscape 2 {.smaller}
+## Fire feedbacks on vegetation 2 {.smaller}
 
 ![](../figures/species_dom_landscape2_gcm.svg){fig-align="center"}
 
-## Landscape 3 {.smaller}
+## Fire feedbacks on vegetation 3 {.smaller}
 
 ![](../figures/species_dom_landscape3_gcm.svg){fig-align="center"}
 
-## Conclusion 1: {.smaller}
+## Conclusion 1 {.smaller}
 
 1. Fire breaks the legacy lock of existing species composition and allows deciduous vegetation to expand
 
@@ -172,40 +203,42 @@ title-slide-attributes:
 3. This result is consistent with fire feedback expectations
 
 
-## Conclusion 2: {.smaller}
+## Conclusion 2 {.smaller}
 
-1. Fire shapes species composition and also the age distribution.
+1. Climate is getting warmer but also a lot *wetter*
 
-2. Legacy locks shape both species composition and stand dynamics.
-
-3. Climate is controlling fire more than vegetation.
-
-4. Fire is controlling vegetation more than climate.
+2. Climate is important for driving fire and shaping downstream feedbacks between vegetation and fire.
 
 
 ## Conclusion 3 {.smaller}
 
-1. Previous work showed that long-term legacies are important.
-  - Transferring from CMIP5 to 6 altered species trajectories due to climate-fire legacies
+1. Previous work showed that long-term legacies are important
+  - Transferring from CMIP5 to CMIP6 altered species trajectories due to climate-fire legacies
+
 2. If fire histories are important then so are fire futures
-3. Which replicate will be the future?
+
+3. Future fire is controlled by the interaction of climate-driven ignition pressure, fuel availability, and vegetation change
+
 
 ## Work in progress :construction_worker: {.smaller}
 
-Our complete study design includes a complete A complete $3*3*3*2*3$ study design:
+Our complete study design is a $3 \times 3 \times 3 \times 2 \times 3$ study design:
 
 - 3 GCMs
 - 3 SSPs
 - 3 landscapes in Alaska plus 3 in Canada
 - Fire feedbacks on/off
-- Possible 3 fire return intervals
+- Possibly 3 fire return intervals
 
 Just a matter of core hours...
 
 ## Future directions {.smaller}
 
 - Carbon dynamics in permafrosts
-- Species establishment in permafrost
-  - surface organic layer depth is an important factor to establishment.
+- Species establishment under future climate and fire
+  - Surface organic layer depth is an important factor to establishment
   - How will the permafrost active layer respond to climate and future fire?
 - How does the microbial community change with climate and fire?
+
+## References
+

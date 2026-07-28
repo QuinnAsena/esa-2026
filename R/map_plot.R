@@ -181,12 +181,12 @@ full_slide_width_cm <- (13.333 * 2.54)
 full_slide_height_cm <- (9.333 * 2.54)
 
 # ggsave(
-  # filename = "./figures/gcm_climate_plot.svg",
-  # plot = gcm_climate_plot,
-  # device = "svg",
-  # width = full_slide_width_cm,
-  # height = full_slide_height_cm,
-  # units = "cm"
+#   filename = "./figures/gcm_climate_plot.svg",
+#   plot = gcm_climate_plot,
+#   device = "svg",
+#   width = full_slide_width_cm,
+#   height = full_slide_height_cm,
+#   units = "cm"
 # )
 
 #---------- plot GCM with GAM over time ----------#
@@ -356,12 +356,15 @@ species_dom2 <- species_dom |>
 species_dom_plot2 <- ggplot(species_dom2, aes(
     x = year_actual, y = area_ha,
     group = interaction(replicate, sp_dom, fire),
-    colour = sp_dom, linetype = fire
+    colour = sp_dom, linetype = fire, linewidth = fire
   )) +
-  geom_line(linewidth = 0.5, alpha = 0.5) +
+  geom_line(alpha = 0.5) +
   facet_grid(landscape ~ model, scales = "free_y") +
   scale_colour_species(name = "Species") +
-  scale_linetype_manual(name = "Fire effect", values = c("Fire" = "solid", "No fire" = "dashed")) +
+  scale_linetype_manual(name = "Fire effect", values = c("Fire" = "solid", "No fire" = "dashed"),
+                         labels = c("Fire" = "Feedback", "No fire" = "No feedback")) +
+  # dashed reads thinner than solid at equal width, so nudge it up slightly
+  scale_linewidth_manual(values = c("Fire" = 0.5, "No fire" = 0.8), guide = "none") +
   scale_x_continuous(breaks = YEAR_BREAKS_ECO, expand = expansion(mult = c(0, 0.05))) +
   labs(x = "Year", y = "Dominant species area (ha)") +
   theme_iland() +
@@ -391,14 +394,17 @@ plot_species_dom_landscape <- function(data, landscape_label) {
     aes(
       x = year_actual, y = area_ha,
       group = interaction(replicate, fire),
-      colour = sp_dom, linetype = fire
+      colour = sp_dom, linetype = fire, linewidth = fire
     )
   ) +
-    geom_line(linewidth = 0.5, alpha = 0.5) +
+    geom_line(alpha = 0.5) +
     facet_grid(sp_dom ~ model, scales = "free_y",
                labeller = labeller(sp_dom = SPECIES_STRIP_LABELS)) +
     scale_colour_species_dark(guide = "none") +
-    scale_linetype_manual(name = "Fire effect", values = c("Fire" = "solid", "No fire" = "dashed")) +
+    scale_linetype_manual(name = "Fire effect", values = c("Fire" = "solid", "No fire" = "dashed"),
+                           labels = c("Fire" = "Feedback", "No fire" = "No feedback")) +
+    # dashed reads thinner than solid at equal width, so nudge it up slightly
+    scale_linewidth_manual(values = c("Fire" = 0.5, "No fire" = 0.8), guide = "none") +
     # the linetype legend key otherwise draws in geom_line's actual colour/
     # alpha (black at alpha=0.5, since colour's own legend is suppressed
     # above) - invisible against a dark background, so force it to solid
