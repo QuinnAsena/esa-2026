@@ -75,7 +75,7 @@ Thanks to funders:
 
 - Fire affects forests by breaking legacy locks and allowing for reorganization
 - Forests affect fire through fuel loads and connectivity
-- Climate change affects forests by favoring species best adapted to future conditions
+- Climate change affects forests by favouring species best adapted to future conditions
 - The relative strength of climate and fire is important for understanding the nature of ecosystem change over the 21st century
 
 
@@ -117,7 +117,7 @@ Thanks to funders:
 
 **Scenario conditions:**
 
-- Climate data from 3 CMIP6 Global Circulation Models (GCMs)
+- Climate data from 3 CMIP6 General Circulation Models (GCMs)
 - 1 Shared Socioeconomic Pathway (SSP) - 2-4.5 - middle of the road scenario
 - Simulated landscapes covering 2015-2100
   - two fire feedback conditions - on/off
@@ -127,9 +127,9 @@ Thanks to funders:
 
 **We'll look at:**
 
-- What climate doing
-- What fire doing
-- What vegetation doing
+- What climate is doing
+- What fire is doing
+- What vegetation is doing
 - How does everything interact
 
 :::
@@ -173,7 +173,7 @@ Thanks to funders:
 - Under these GCM-SSPs boreal region also getting wetter
 
 ::: {.incremental}
-- Fire maybe not increasing as much as expected... :confused:
+- Fire may not be increasing as much as expected... :confused:
 :::
 
 :::
@@ -186,15 +186,15 @@ Thanks to funders:
 
 ::: {.incremental}
 - Caveat: we are examining model parameters of fire, which might affect the response to climate change
-- precipitation is just one way to measure landscape dryness. Our next steps are to look at other soil moisture and fuel moisture which both are mediated by ET...
+- Other ecologically relevant metrics to investigate include soil moisture and fuel moisture, both of which are mediated by ET...
 :::
 
 
 ## What is vegetation doing? {.smaller}
 
-- Initial expectation was an expansion of deciduous species with increased fire and warmer climate
+- Initial expectation was that warmer climates and fire favour deciduous species.
   - Black spruce adapted to cool conditions
-  - Deciduous warmer cositions
+  - Deciduous warmer conditions
   - We expect deciduous vegetation to do better with future climate 
 
 ## Fire feedbacks on vegetation 1 {.smaller}
