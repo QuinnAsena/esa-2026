@@ -249,6 +249,7 @@ fire_df <- arrow::read_parquet("//10.60.2.10/FF_Lab/personal_storage/quinn_stora
     model     %in% c("NorEsm2-MM", "TaiESM1", "UKESM1-0-LL"),
     ssp       %in% c("ssp245"),
     fri       %in% c("baseline"),
+    onlysim   %in% c("onlysimfalse"),
     year_actual >= 2015,
     year_actual <= 2100
   ) |>

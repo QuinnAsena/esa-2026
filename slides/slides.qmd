@@ -1,7 +1,7 @@
 ---
 title: "Assessing climate-driven compositional shifts in Boreal Forests using iLand"
 subtitle: "^1^Cary Institute of Ecosystem Studies &nbsp;&nbsp; ^2^University of Alaska Fairbanks"
-author: "Quinn Asena^1^ • Manette Sandor^1^ • Kate Hayes^2^ • Winslow Hansen^1^"
+author: "Quinn Asena^1^ • Manette Sandor^1^ • Kate Hayes^2^ • Winslow D. Hansen^1^"
 date: today
 bibliography: ./refs.bib
 from: markdown+emoji
@@ -15,7 +15,7 @@ format:
     embed-resources: true
 
 title-slide-attributes:
-  data-background-color: "#054746ff"
+  data-background-color: "#123524"
 ---
 
 ## Acknowledgements {.smaller}
@@ -67,7 +67,7 @@ Thanks to funders:
 
 ## Question {.smaller}
 
-*What are the relative impacts of fire on vegetation vs vegetation on fire under future climates?*
+*What are the relative impacts of fire versus climate on vegetation over the next century?*
 
 <br>
 
@@ -75,7 +75,8 @@ Thanks to funders:
 
 - Fire affects forests by breaking legacy locks and allowing for reorganization
 - Forests affect fire through fuel loads and connectivity
-- The relative strength of each is important for understanding the nature of ecosystem change in the future with warming
+- Climate change affects forests by favoring species best adapted to future conditions
+- The relative strength of climate and fire is important for understanding the nature of ecosystem change over the 21st century
 
 
 ## Study area {.smaller}
@@ -83,7 +84,7 @@ Thanks to funders:
 :::: {.columns}
 ::: {.column width="40%"}
 
-- Using iLand we simulated 4 species across 3 landscapes in interior Alaska:
+- Simulated 4 species across 3 landscapes in interior Alaska:
   - Conifers: black and white spruce
   - Deciduous: aspen and birch
 - Each landscape is 60 kha in size
@@ -97,6 +98,18 @@ Thanks to funders:
 :::
 ::::
 
+## Life history traits and fire adaptations {.smaller}
+
+::: {layout-nrow=2}
+![](../figures/aspen_birch.jpg){width="350px" fig-align="right"}
+
+![](../figures/curly_spruce.jpg){width="350px" fig-align="left"}
+
+![](../figures/burned_cones.jpg){width="350px" fig-align="right"}
+
+![](../figures/burned_spruce.jpg){width="350px" fig-align="left"}
+:::
+
 ## Study design {.smaller}
 
 :::: {.columns}
@@ -105,8 +118,7 @@ Thanks to funders:
 **Scenario conditions:**
 
 - Climate data from 3 CMIP6 Global Circulation Models (GCMs)
-- 1 Shared Socioeconomic Pathway (SSP) - 2-4.5
-  - intermediate / middle of the road scenario
+- 1 Shared Socioeconomic Pathway (SSP) - 2-4.5 - middle of the road scenario
 - Simulated landscapes covering 2015-2100
   - two fire feedback conditions - on/off
 
@@ -173,14 +185,17 @@ Thanks to funders:
 ::::
 
 ::: {.incremental}
-- Caveat: we are examining model parameters of drought index, which might affect fire response to climate
+- Caveat: we are examining model parameters of fire, which might affect the response to climate change
+- precipitation is just one way to measure landscape dryness. Our next steps are to look at other soil moisture and fuel moisture which both are mediated by ET...
 :::
+
 
 ## What is vegetation doing? {.smaller}
 
-- Initial expectation was an expansion of deciduous species with increased fire
--
-- 
+- Initial expectation was an expansion of deciduous species with increased fire and warmer climate
+  - Black spruce adapted to cool conditions
+  - Deciduous warmer cositions
+  - We expect deciduous vegetation to do better with future climate 
 
 ## Fire feedbacks on vegetation 1 {.smaller}
 
@@ -213,14 +228,13 @@ Thanks to funders:
 ## Conclusion 3 {.smaller}
 
 1. Previous work showed that long-term legacies are important
-  - Transferring from CMIP5 to CMIP6 altered species trajectories due to climate-fire legacies
 
 2. If fire histories are important then so are fire futures
 
 3. Future fire is controlled by the interaction of climate-driven ignition pressure, fuel availability, and vegetation change
 
 
-## Work in progress :construction_worker: {.smaller}
+<!-- ## Work in progress :construction_worker: {.smaller}
 
 Our complete study design is a $3 \times 3 \times 3 \times 2 \times 3$ study design:
 
@@ -238,7 +252,7 @@ Just a matter of core hours...
 - Species establishment under future climate and fire
   - Surface organic layer depth is an important factor to establishment
   - How will the permafrost active layer respond to climate and future fire?
-- How does the microbial community change with climate and fire?
+- How does the microbial community change with climate and fire? -->
 
 ## References
 
