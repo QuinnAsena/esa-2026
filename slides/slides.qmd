@@ -98,7 +98,7 @@ Thanks to funders:
 :::
 ::::
 
-## Life history traits and fire adaptations {.smaller}
+## Life history traits and fire adaptation {.smaller}
 
 ::: {layout-nrow=2}
 ![](../figures/aspen_birch.jpg){width="350px" fig-align="right"}
@@ -170,7 +170,7 @@ Thanks to funders:
 
 - Initial expectation was:
   - *warmer conditions → more fire → shift towards a deciduous composition*
-- Under these GCM-SSPs boreal region also getting wetter
+- Under these GCM-SSPs boreal region also getting wetter, much wetter
 
 ::: {.incremental}
 - Fire may not be increasing as much as expected... :confused:
@@ -193,9 +193,10 @@ Thanks to funders:
 ## What is vegetation doing? {.smaller}
 
 - Initial expectation was that warmer climates and fire favour deciduous species.
+  - Deciduous adapted warmer conditions
+    -  rapidly resprout post fire
   - Black spruce adapted to cool conditions
-  - Deciduous warmer conditions
-  - We expect deciduous vegetation to do better with future climate 
+    - mature more slowly
 
 ## Fire feedbacks on vegetation 1 {.smaller}
 
@@ -220,9 +221,9 @@ Thanks to funders:
 
 ## Conclusion 2 {.smaller}
 
-1. Climate is getting warmer but also a lot *wetter*
+1. Climate is getting warmer but also a lot *wetter* complicating future fire projections
 
-2. Climate is important for driving fire and shaping downstream feedbacks between vegetation and fire.
+2. Climate is important for driving fire and shaping downstream feedbacks between vegetation and fire
 
 
 ## Conclusion 3 {.smaller}
@@ -240,7 +241,7 @@ Our complete study design is a $3 \times 3 \times 3 \times 2 \times 3$ study des
 
 - 3 GCMs
 - 3 SSPs
-- 3 landscapes in Alaska plus 3 in Canada
+- 6 landscapes in Alaska plus 10 in Canada
 - Fire feedbacks on/off
 - Possibly 3 fire return intervals
 

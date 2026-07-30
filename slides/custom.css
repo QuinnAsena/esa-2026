@@ -15,7 +15,7 @@
    tighten spacing so everything fits. .reveal h1 is forced to 28pt
    !important by the theme, so this needs !important too to win. */
 #title-slide .title {
-  font-size: 26pt !important;
+  font-size: 34pt !important;
   margin-bottom: 0.3em;
 }
 #title-slide .subtitle {
