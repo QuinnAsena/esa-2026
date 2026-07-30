@@ -227,7 +227,7 @@ Thanks to funders:
 
 ## Conclusion 3 {.smaller}
 
-1. Previous work showed that long-term legacies are important
+1. Previous work showed that long-term climate-fire legacies are important
 
 2. If fire histories are important then so are fire futures
 
@@ -253,6 +253,10 @@ Just a matter of core hours...
   - Surface organic layer depth is an important factor to establishment
   - How will the permafrost active layer respond to climate and future fire?
 - How does the microbial community change with climate and fire? -->
+
+## Thanks for listening! Questions? {.smaller}
+
+![](../figures/xkcd-arctic.jpg){fig-align="center"}
 
 ## References
 
